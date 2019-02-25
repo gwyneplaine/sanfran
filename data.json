@@ -1,0 +1,108 @@
+{
+ "0": [
+  "spacing_radio_default_circle_lineheight",
+  "animation_radio_default_circle_delay",
+  "animation_radio_default_border_delay"
+ ],
+ "colors.N80": [
+  "color_label_default_text_default_dark",
+  "color_label_default_text_default_light"
+ ],
+ "colors.N900": [
+  "color_label_default_text_disabled_dark"
+ ],
+ "colors.DN60": [
+  "color_label_default_text_disabled_light"
+ ],
+ "colors.DN80": [
+  "color_radio_default_border_default_dark",
+  "color_radio_default_border_focus_dark",
+  "color_radio_default_border_active_dark",
+  "color_radio_default_border_checked_dark"
+ ],
+ "colors.N40": [
+  "color_radio_default_border_default_light",
+  "color_radio_default_border_hover_light",
+  "color_radio_default_border_active_light",
+  "color_radio_default_border_checked_light"
+ ],
+ "colors.B100": [
+  "color_radio_default_border_focus_light"
+ ],
+ "colors.R300": [
+  "color_radio_default_border_invalid_light",
+  "color_radio_default_border_invalid_dark"
+ ],
+ "colors.DN200": [
+  "color_radio_default_border_hover_dark"
+ ],
+ "colors.N10": [
+  "color_radio_default_dot_checked_light",
+  "color_radio_default_circle_default_light"
+ ],
+ "colors.DN90": [
+  "color_radio_default_dot_checked_dark",
+  "color_radio_default_dot_disabledAndChecked_dark"
+ ],
+ "transparent": [
+  "color_radio_default_dot_default_light",
+  "color_radio_default_dot_default_dark"
+ ],
+ "colors.N70": [
+  "color_radio_default_dot_disabledAndChecked_light"
+ ],
+ "colors.B400": [
+  "color_radio_default_dot_activeAndChecked_light",
+  "color_radio_default_circle_checked_light",
+  "color_radio_default_circle_checked_dark"
+ ],
+ "colors.DN10": [
+  "color_radio_default_dot_activeAndChecked_dark",
+  "color_radio_default_circle_default_dark",
+  "color_radio_default_circle_disabled_dark",
+  "color_radio_default_circle_checkedInvalid_dark"
+ ],
+ "colors.N20": [
+  "color_radio_default_circle_disabled_light"
+ ],
+ "colors.B50": [
+  "color_radio_default_circle_active_light"
+ ],
+ "colors.B200": [
+  "color_radio_default_circle_active_dark"
+ ],
+ "colors.N30": [
+  "color_radio_default_circle_hover_light"
+ ],
+ "colors.DN30": [
+  "color_radio_default_circle_hover_dark"
+ ],
+ "colors.B300": [
+  "color_radio_default_circle_hoveredAndChecked_light"
+ ],
+ "colors.B75": [
+  "color_radio_default_circle_hoveredAndChecked_dark"
+ ],
+ "4px": [
+  "spacing_label_default_padding_left",
+  "spacing_label_default_padding_right"
+ ],
+ "2px": [
+  "spacing_label_default_padding_top",
+  "spacing_label_default_padding_bottom"
+ ],
+ "all": [
+  "animation_radio_default_circle_property"
+ ],
+ "0.2s": [
+  "animation_radio_default_circle_duration",
+  "animation_radio_default_border_duration"
+ ],
+ "ease-in-out": [
+  "animation_radio_default_circle_timingFunction",
+  "animation_radio_default_border_timingFunction"
+ ],
+ "stroke": [
+  "animation_radio_default_border_property"
+ ]
+}

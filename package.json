@@ -1,0 +1,14 @@
+{
+  "name": "babel-things",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@atlaskit/theme": "^7.0.5",
+    "@babel/core": "^7.3.3",
+    "@babel/parser": "^7.3.3",
+    "@babel/traverse": "^7.2.3",
+    "@babel/types": "^7.3.3",
+    "path": "^0.12.7"
+  }
+}
