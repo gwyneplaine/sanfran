@@ -29,10 +29,10 @@ class PropertyMap {
 
 let propertyMap = new PropertyMap();
 
-converterFactory = (name) => {
-  let converters = {};
+visitorFactory = (name) => {
+  let visitors = {};
 
-  function getLiteralIdentifier (path, context) {
+  function getLiteralIdentifier (path) {
     let parent = path.get('parent');
     if (parent.parentPath.parentKey === 'init') {
       let key = parent.parentPath.container.id.name;
@@ -40,16 +40,16 @@ converterFactory = (name) => {
     }
   }
 
-  converters.Identifier = function (path, thing) {
+  visitors.Identifier = function (path, thing) {
     let parent = path.get('parent');
     if (parent.parentPath.parentKey === 'init') {
       const token = propertyMap.resolveProperty(path.node.name);
       propertyMap.build(token, `${name}_${parent.parentPath.container.id.name}`);
     }
   };
-  converters.StringLiteral = getLiteralIdentifier;
-  converters.NumericLiteral = getLiteralIdentifier;
-  converters.MemberExpression = function (path) {
+  visitors.StringLiteral = getLiteralIdentifier;
+  visitors.NumericLiteral = getLiteralIdentifier;
+  visitors.MemberExpression = function (path) {
     const object = path.get('object').node.name;
     const property = path.get('property').node.name;
     if (types.isVariableDeclarator(path.parentPath.node)) {
@@ -58,7 +58,7 @@ converterFactory = (name) => {
     }
   };
 
-  return converters;
+  return visitors;
 };
 
 async function componentAudit (component) {
@@ -78,7 +78,7 @@ async function componentAudit (component) {
     let ast = parser.parse(file, {
       sourceType: 'module',
     })
-    traverse(ast, converterFactory(componentName));
+    traverse(ast, visitorFactory(componentName));
   } catch (e) {
     console.log(component);
     console.trace(e);
