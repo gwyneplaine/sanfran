@@ -52,8 +52,10 @@ converterFactory = (name) => {
   converters.MemberExpression = function (path) {
     const object = path.get('object').node.name;
     const property = path.get('property').node.name;
-    const assignee = path.parentPath.node.id.name;
-    propertyMap.build(`${object}.${property}`, `${name}_${assignee}`);
+    if (types.isVariableDeclarator(path.parentPath.node)) {
+      const assignee = path.parentPath.node.id.name;
+      propertyMap.build(`${object}.${property}`, `${name}_${assignee}`);
+    }
   };
 
   return converters;
@@ -78,6 +80,7 @@ async function componentAudit (component) {
     })
     traverse(ast, converterFactory(componentName));
   } catch (e) {
+    console.log(component);
     console.trace(e);
   }
 
