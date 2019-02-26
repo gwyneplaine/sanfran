@@ -60,10 +60,6 @@ converterFactory = (name) => {
 };
 
 async function componentAudit (component) {
-  // access a list of components
-  // queue a Promise.all that loads in the
-  // looad the component name from the package.json
-
   try {
     const componentPath = path.resolve(process.cwd(), `./packages/core/${component}`);
     const componentTokensPath = path.resolve(componentPath, './src/component-tokens.js');
@@ -87,9 +83,6 @@ async function componentAudit (component) {
 
 }
 async function run () {
-  // access a list of components
-  // queue a Promise.all that loads in the
-  // looad the component name from the package.json
   const componentList = [
     'button',
     'checkbox',
