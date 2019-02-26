@@ -1,5 +1,5 @@
 {
-  "name": "babel-things",
+  "name": "san-fran",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -10,5 +10,8 @@
     "@babel/traverse": "^7.2.3",
     "@babel/types": "^7.3.3",
     "path": "^0.12.7"
+  },
+  "bin": {
+    "sanfran": "./index.js"
   }
 }
