@@ -17,6 +17,7 @@ class PropertyMap {
     }
   }
   resolveProperty (value) {
+    console.log(this.propertyMap)
     return Object.keys(this.propertyMap).find((key) => (this.propertyMap[key].has(value)));
   }
   getExportableMap () {
@@ -40,18 +41,55 @@ visitorFactory = (name) => {
     }
   }
 
-  visitors.Identifier = function (path, thing) {
+  function resolveCallExpressionArgument (argument) {
+      switch (argument.type) {
+        case 'MemberExpression': {
+          return `${resolveCallExpressionArgument(argument.object)}.${resolveCallExpressionArgument(argument.property)}`;
+        }
+        case 'Identifier': {
+          return argument.name;
+        }
+        case 'StringLiteral': {
+          return argument.value;
+        }
+        case 'NumericLiteral': {
+          return argument.value;
+        }
+        default: {
+          return '';
+        }
+      }
+  }
+
+  visitors.Identifier = function (path) {
     let parent = path.get('parent');
     if (parent.parentPath.parentKey === 'init') {
-      const token = propertyMap.resolveProperty(path.node.name);
+      console.log(path.node.name);
+      const token = propertyMap.resolveProperty(`${name}_${path.node.name}`);
+      // console.log(parent.parentPath.container);
+      console.log(token);
       propertyMap.build(token, `${name}_${parent.parentPath.container.id.name}`);
     }
   };
+  visitors.CallExpression = function (path) {
+    if (types.isVariableDeclarator(path.parentPath.node)) {
+
+      if (arguments) {
+        const functionName = path.get('callee').node.name;
+        const arguments = path.node.arguments.map(resolveCallExpressionArgument);
+        propertyMap.build(`${functionName}(${arguments.join(', ')})`, `${name}_${path.parentPath.node.id.name}`);
+      } else {
+        propertyMap.build(`${functionName}()`, `${name}_${path.parentPath.node.id.name}`);
+      }
+      // console.log(path.node)
+    }
+  },
   visitors.StringLiteral = getLiteralIdentifier;
   visitors.NumericLiteral = getLiteralIdentifier;
   visitors.MemberExpression = function (path) {
     const object = path.get('object').node.name;
     const property = path.get('property').node.name;
+    // if (types.isCallExpression(path.parentPath.node)) return;
     if (types.isVariableDeclarator(path.parentPath.node)) {
       const assignee = path.parentPath.node.id.name;
       propertyMap.build(`${object}.${property}`, `${name}_${assignee}`);
