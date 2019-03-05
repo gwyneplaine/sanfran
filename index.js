@@ -17,7 +17,6 @@ class PropertyMap {
     }
   }
   resolveProperty (value) {
-    console.log(this.propertyMap)
     return Object.keys(this.propertyMap).find((key) => (this.propertyMap[key].has(value)));
   }
   getExportableMap () {
@@ -64,10 +63,7 @@ visitorFactory = (name) => {
   visitors.Identifier = function (path) {
     let parent = path.get('parent');
     if (parent.parentPath.parentKey === 'init') {
-      console.log(path.node.name);
       const token = propertyMap.resolveProperty(`${name}_${path.node.name}`);
-      // console.log(parent.parentPath.container);
-      console.log(token);
       propertyMap.build(token, `${name}_${parent.parentPath.container.id.name}`);
     }
   };
@@ -81,7 +77,6 @@ visitorFactory = (name) => {
       } else {
         propertyMap.build(`${functionName}()`, `${name}_${path.parentPath.node.id.name}`);
       }
-      // console.log(path.node)
     }
   },
   visitors.StringLiteral = getLiteralIdentifier;
@@ -118,11 +113,61 @@ async function componentAudit (component) {
     })
     traverse(ast, visitorFactory(componentName));
   } catch (e) {
-    console.log(component);
     console.trace(e);
   }
-
 }
+
+function getPackageList (references) {
+  const packages = new Set();
+  references.forEach((r) => {
+    packages.add(r.package);
+  });
+  return Array.from(packages);
+}
+
+function tokensArrayToObject (referencesArray, value) {
+  const token = referencesArray.reduce((acc, curr) => {
+    const [ package, concern, component, appearance, styleprop, state, mode ] = curr.replace('__', '_').split('_');
+    acc.references.push({
+      package,
+      concern,
+      component,
+      appearance,
+      styleprop,
+      state,
+      mode,
+      name: curr,
+    });
+    return acc;
+  }, {
+   value,
+   references: [],
+   length: referencesArray.length,
+  });
+
+  return {
+    ...token,
+    packages: getPackageList(token.references),
+  }
+}
+
+function formatData (map) {
+  return Object.keys(map).reduce((acc, curr) => {
+
+    const formattedValues = tokensArrayToObject(map[curr], curr);
+
+    if (curr.includes('colors.') || curr.includes('gridSize')) {
+      acc.tokenizedValues.push(formattedValues);
+    } else {
+      acc.rawValues.push(formattedValues);
+    }
+    return acc;
+  },{
+    tokenizedValues: [],
+    rawValues: [],
+  })
+}
+
 async function run () {
   const componentList = [
     'button',
@@ -139,7 +184,8 @@ async function run () {
     'css-reset'
   ];
   await Promise.all(componentList.map(componentAudit));
-  const exportableMap = propertyMap.getExportableMap();
+  const exportableMap = formatData(propertyMap.getExportableMap());
+
   fs.writeFileSync(path.resolve(__dirname, './data.json'), JSON.stringify(exportableMap, null, 1));
 }
 
